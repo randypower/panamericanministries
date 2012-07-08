@@ -157,7 +157,7 @@
 	// Set up a Query to filter the Opportunities we'll retrieve
 	var smQuery = new StackMob.Collection.Query();
 	//you can chain query parameters
-	smQuery.equals('active', true).equals('is_met', false);
+	smQuery.equals('is_active', true).equals('is_met', false);
 	      
 	// Get the Opportunities, filtered by the query
 	var opps2 = new Opportunities();
