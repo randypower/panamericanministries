@@ -1,0 +1,11 @@
+# StackMob config file #
+########################
+# See https://mob1.stackmob.com/platform/help/tutorials/html5_js_sdk
+.stackmob
+ 
+# OS generated files #
+######################
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
