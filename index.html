@@ -18,6 +18,27 @@
 		<script type="text/javascript" src="http://static.stackmob.com/js/2.5.3-crypto-sha1-hmac.js"></script>
 		<script type="text/javascript" src="http://static.stackmob.com/js/stackmob-js-0.5.1-min.js"></script>
 
+		<!-- HANDLEBARS -->
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0.beta6/handlebars.min.js"></script>
+		<script id="opportunities-template" type="text/x-handlebars-template">
+			{{#if opportunities}}
+				<dl>{{#each opportunities}}
+				  {{#with this}}
+					<dt>{{title}}</dt>
+					<dd>
+						{{#if images}}Images: {{#each images}}{{this}}{{/each}}<br />{{/if}}
+						{{description}}
+					</dd>
+				  {{/with}}
+				{{/each}}</dl>
+			{{/if}}
+		</script>
+		
+		<script type="text/javascript">
+			var opportunities_template_source   = $("#opportunities-template").html();
+			var opportunities_template = Handlebars.compile(opportunities_template_source);
+		</script>
+		
 		<!--
 		*************************************
 		INITIALIZE THE JS SDK BELOW
@@ -59,7 +80,7 @@
 		<!--
 		*************************************
 		*************************************
-		*************************************
+		*************************************	
 		*************************************
 		STACKMOB JS SDK CODE THAT CREATES AND SAVES A TESTOBJECT
 		*************************************
@@ -68,6 +89,7 @@
 		*************************************
 		-->
 		<script type="text/javascript">
+/*
       $(document).ready(function() {
 
         //Define your class/object
@@ -108,7 +130,53 @@
           }
         });
       });
+*/
 
+  $(document).ready(function() {
+	//Define our Opportunity class
+	var Opportunity = StackMob.Model.extend({
+ 		schemaName: 'opportunity'  //schemaName must be lowercase
+	});
+
+	// Define a Opportunities as a Collection object
+	var Opportunities = StackMob.Collection.extend({
+		model: Opportunity
+	});
+	
+	// Go get all the Opportunities
+/*
+	var opps = new Opportunities();
+	opps.fetch({
+		success: function(collection) {
+			//after we've retrieved all the Opportunity items from StackMob, let's see what we have!
+			console.debug("All Opportunities...");
+			console.debug(opps.toJSON());
+		}
+	});
+*/	
+	// Set up a Query to filter the Opportunities we'll retrieve
+	var smQuery = new StackMob.Collection.Query();
+	//you can chain query parameters
+	smQuery.equals('active', true).equals('is_met', false);
+	      
+	// Get the Opportunities, filtered by the query
+	var opps2 = new Opportunities();
+	opps2.query(smQuery, {
+		success: function(collection) {
+			//after we've retrieved the Opportunity items from StackMob, let's see what we have!
+			console.debug("Filtered Opportunities");
+			console.debug(opps2.toJSON());
+			// alert(JSON.stringify(opps2));
+			// apply template
+			var context = { opportunities: opps2.toJSON() }
+			var html    = opportunities_template(context);
+			$("#opportunities").html(html);
+		}
+	});
+	
+  });	// document.ready
+
+		
 		</script>
 		<!--
 		*************************************
@@ -123,50 +191,12 @@
 		-->
 		
 		
-		<title>Your First API Call</title>		
-		<link href="http://www.stackmob.com/platform/favicon.ico" type="image/vnd.microsoft.icon" rel="icon" />
-		<link href="http://www.stackmob.com/platform/favicon.png" type="image/png" rel="icon" />
+		<title>Opportunities to Bless</title>		
 		<link rel="stylesheet" href="styles/index.css" />
 	</head>
 	<body>
-		<h1>Congratulations!</h1>
-		<p id="runmessage">
-			Don't forget to <a href="https://stackmob.com/platform/help/tutorials/html5_js_sdk" target="_blank">initialize the JS SDK</a>!
-			<br/>
-			Please run this in <a href="http://www.stackmob.com/devcenter/docs/Local-HTML-Runner" target="_blank">StackMob's Local Runner</a> or through <a href="http://www.stackmob.com/devcenter/docs/StackMob-Hosted-HTML5:-GitHub" target="_blank">StackMob's GitHub-integrated hosting</a>.
-		</p>
-		<h2> You just ran your first JS SDK call! </h2>
-		<p>
-			It created a new schema in your server-side StackMob database named
-			<code>
-				testobject
-			</code>
-			.
-		</p>
-		<p>
-			<a href="https://www.stackmob.com/platform/api/schemas/edit/testobject" target="_blank" class="button">View your new testobject schema</a>
-		</p>
-		<p>
-			...and it also saved a
-			<code>
-				testobject
-			</code>
-			object - all in one call.
-		</p>
-		<p>
-			<a href="https://www.stackmob.com/platform/api/schemas/browser" target="_blank" class="button">View the Data</a>
-		</p>
-		<p>
-			View the source, then learn more!
-			<ul>
-				<li>
-					<a href="http://www.stackmob.com/devcenter/docs/JS-SDK-Tutorial" target="_blank">JS SDK Tutorial</a>
-				</li>
-				<li>
-					<a href="http://www.stackmob.com/devcenter/docs/Javascript-SDK-API" target="_blank">JS SDK API Docs</a>
-				</li>
-			</ul>
-			* all models and collections inherit from <a href="http://backbonejs.org/" target="_blank">Backbone.js</a> and hence share the same methods.  Feel free to optionally <a href="http://backbonejs.org/" target="_blank">learn more about Backbone</a>!
-		</p>
+		<h1>Opportunities to Bless</h1>
+		<div id="opportunities">Finding opportunities...</div>
+
 	</body>
 </html>

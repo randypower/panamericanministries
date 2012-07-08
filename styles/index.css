@@ -2,19 +2,8 @@ body {
 				font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
-#runmessage {
-	position: fixed;
-	bottom: 20px;
-	left: 20px;
-	padding: 10px;
-	border: 1px solid #CCC;
-	border-radius: 10px;
-	-webkit-border-radius: 10px;
-	-moz border-radius: 10px;
-	font-weight: bold;
-}
-
-code { font-weight: bold; }
+dt {	font-weight: bold; color: orange; }
+dd {	font-size: smaller; color: rgb(30,30,30); padding-bottom: 10px; }
 
 .button, .button a
 {
